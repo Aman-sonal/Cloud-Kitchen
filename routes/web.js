@@ -8,9 +8,10 @@ const { fileLoader } = require('ejs');
 // we are using this structure of file.
 function initRoutes(app){
 app.get("/", homeContoller().index)
-app.get('/cart' ,cartController().index);
 app.get('/login' , authController().login)
 app.get('/register' ,authController().register);
+app.get('/cart' ,cartController().index);
+app.post('/update-cart', cartController().update);
 }
 
 

@@ -6,23 +6,25 @@
         </div>
     </div>
     <div class="pizza-list">
+        <% for(let i of Object.values(session.cart.items)) {%>
         <div class="flex items-center my-8">
-            <img class="w-24" src="/img/pizza.png " alt="" srcset="">
+            <img class="w-24" src="/img/<%= i.item.image%>" alt="" srcset="">
             <div class="flex-1 ml-4">
-                <h1>Margerita</h1>
-                <span>MEDIUM</span>
+                <h1><%= i.item.name%></h1>
+                <span><%= i.item.size%></span>
             </div>
             <span class="flex-1">
-                1Pcs
+                <%= console.log(i) %>Pcs
             </span>
-            <span class="font-bold text-lg">₹300</span>
+            <span class="font-bold text-lg">₹ <%= i.item.price * i.qty%></span>
         </div>
+        <% }%>
     </div>
     <hr>
     <div class="text-right py-4">
         <div>
             <span class="text-lg font-bold">Total Amount</span>
-            <span class="amount text-2xl fomt-bold ml-2"> ₹300</span>
+            <span class="amount text-2xl fomt-bold ml-2"> <%= session.cart.totalPrice%></span>
         </div>
         <div>
             <form action="" class="mt-12">
