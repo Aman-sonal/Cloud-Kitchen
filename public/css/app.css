@@ -86,3 +86,8 @@ section.login a:hover {
       opacity: 0;
     }
   }
+  /* primary =#FE5F1E; */
+  a.link{
+      color:#FE5F1E;
+
+  }
