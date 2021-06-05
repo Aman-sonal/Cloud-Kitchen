@@ -1,5 +1,6 @@
 const Order= require('../../../models/order');
 const moment= require('moment');
+const { rawListeners } = require('../../../models/order');
 function orderController(){
     return {
         postOrders(req, res){
@@ -28,8 +29,21 @@ function orderController(){
         async getOrder(req,res){
              const orders = await Order.find({customerId: req.user._id}, null, {sort:{'createdAt' :-1}});
              res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-             res.render('customers/orders', { orders: orders, moment: moment })
+             res.render('customers/orders', { orders: orders, moment: moment 
+            })
              console.log(orders);
+        },
+        async showOrder(req, res)
+        {
+            const order= await Order.findById(req.params.id)
+            {
+                //Authorize user 
+                if(req.user._id.toString() === order.customerId.toString() ){
+                    res.render("customers/singleOrder", {order:order})
+                }else{
+                    res.redirect('/');
+                }
+            }            
         }
     }
 }

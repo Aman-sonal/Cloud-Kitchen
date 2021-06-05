@@ -56,8 +56,10 @@ function initAdmin() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _admin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./admin */ "./resources/js/admin.js");
-// import moment from 'moment'; 
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _admin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin */ "./resources/js/admin.js");
+
 
 var addToCart = document.querySelectorAll(".add-to-cart");
 var cartCounter = document.querySelector(".cart-counter");
@@ -161,7 +163,33 @@ if (alertMsg) {
   }, 2000);
 }
 
-(0,_admin__WEBPACK_IMPORTED_MODULE_0__.initAdmin)();
+(0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(); //change Order Status
+
+var status = document.querySelectorAll('.status_line');
+var Order = document.querySelector('#hiddenInput') ? document.querySelector('#hiddenInput').value : null;
+Order = JSON.parse(Order);
+console.log(Order, "sdcdscds");
+var time = document.createElement('small');
+
+function updateStatus() {
+  var stepCompleted = true;
+  status.forEach(function (sta) {
+    var dataProp = sta.dataset.status;
+
+    if (stepCompleted) {
+      sta.classList.add('step-completed');
+    }
+
+    if (dataProp === Order.status) {
+      stepCompleted = false;
+      time.innerText = moment__WEBPACK_IMPORTED_MODULE_0___default()(Order.updatedAt).format('hh:mm A');
+      sta.appendChild(time);
+      if (sta.nextElementSibling) sta.nextElementSibling.classList.add('current');
+    }
+  });
+}
+
+updateStatus();
 
 /***/ }),
 

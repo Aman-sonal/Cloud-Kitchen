@@ -1,4 +1,4 @@
-// import moment from 'moment'; 
+import moment from 'moment'; 
 import {initAdmin} from './admin';
 let addToCart = document.querySelectorAll(".add-to-cart");
 let cartCounter = document.querySelector(".cart-counter");
@@ -110,3 +110,31 @@ if (alertMsg) {
 }
 
 initAdmin();
+
+//change Order Status
+let status= document.querySelectorAll('.status_line');
+let Order=document.querySelector('#hiddenInput')? document.querySelector('#hiddenInput').value: null;
+Order=JSON.parse(Order);
+console.log(Order,"sdcdscds");
+let time= document.createElement('small');
+function updateStatus()
+{
+  let stepCompleted=true;
+  status.forEach((sta)=>{
+      let dataProp= sta.dataset.status;
+      if(stepCompleted)
+      {
+        sta.classList.add('step-completed');
+      }
+      if(dataProp=== Order.status)
+      {
+        stepCompleted=false;
+        time.innerText= moment(Order.updatedAt).format('hh:mm A');
+        sta.appendChild(time); 
+          if(sta.nextElementSibling)
+              sta.nextElementSibling.classList.add('current');
+      }
+  })
+}
+
+updateStatus();

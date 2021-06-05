@@ -4,6 +4,7 @@ const cartController= require('../app/http/controller/customers/cartController')
 const orderController= require('../app/http/controller/customers/orderController');
 const { fileLoader } = require('ejs');
 const adminController= require('../app/http/controller/admin/adminOrderController');
+const statusController= require('../app/http/controller/admin/statusController');
 // here we are using factory pattern so instead of using // (req, res) => {
     //     //     res.render("home");
     //     //   } 
@@ -28,9 +29,12 @@ app.post('/logout', authController().logout);
 ///customer routes
 app.post('/orders',auth, orderController().postOrders);
 app.get('/customer/orders',auth,  orderController().getOrder);
+app.get('/customer/orders/:id',auth,  orderController().showOrder);
 
 //admin routes
 app.get('/admin/orders',admin, adminController().getOrder);
+
+app.post('/admin/order/status',admin, statusController().update);
 
 }
 
