@@ -10,6 +10,7 @@ function adminController() {
         .populate("customerId", "-password")
         .exec((err, orders) => {
           if (req.xhr) {
+            console.log('Axios Called');
             return res.json(orders);
           } else {
             console.log('render');

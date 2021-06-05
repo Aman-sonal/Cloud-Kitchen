@@ -34,7 +34,7 @@ let mongoStore = new MongoDbStore({
   
   //session config
   app.use(session({
-    secret:process.env.COOKIE_SECRET,
+    secret:"thisismysecret",
     resave:true,
     store:mongoStore,
     saveUninitialized:false,
