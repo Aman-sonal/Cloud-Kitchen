@@ -1,5 +1,6 @@
 import moment from 'moment';
-export function initAdmin() {
+import Noty from 'noty';
+export function initAdmin(socket) {
 const orderTableBody = document.querySelector("#orderTableBody");
 
     let orders = [];
@@ -95,5 +96,18 @@ const orderTableBody = document.querySelector("#orderTableBody");
           `;
         }).join("");
     }
+
+    //Socket 
+    socket.on('updateAdminPage', (ord)=>{
+      new Noty({
+        type: 'success',
+        timeout: 1000,
+        text: 'New order!',
+        progressBar: false,
+    }).show();
+          console.log("from Admin", ord);
+          orders.unshift(ord);
+          orderTableBody.innerHTML = '';
+          orderTableBody.innerHTML = generateMarkup(orders);
+    })
   }
-  

@@ -1,6 +1,5 @@
 const Order= require('../../../models/order');
 const moment= require('moment');
-const { rawListeners } = require('../../../models/order');
 function orderController(){
     return {
         postOrders(req, res){
@@ -16,10 +15,16 @@ function orderController(){
                 address: address, 
             })
             order.save()
-            .then((err) =>{
-                req.flash('Success', 'Order Placed Succesfully');
-                delete req.session.cart;
-                return res.redirect('customer/orders');
+            .then((result) =>{
+                Order.populate(result, {path:'customerId'}, (err, placedOrder)=>{
+                    req.flash('Success', 'Order Placed Succesfully');
+                    //Emit
+                    const eventEmitter = req.app.get('eventEmitter');
+                    console.log(placedOrder);
+                    eventEmitter.emit('orderPlaced', placedOrder); 
+                    delete req.session.cart;
+                    return res.redirect('customer/orders');
+                })
             })
             .catch((err) =>{
                 req.flash('error', "Something went wrong");
