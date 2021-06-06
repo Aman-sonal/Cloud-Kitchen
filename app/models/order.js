@@ -23,6 +23,10 @@ const orderSchema = new Schema({
         type:String,
         default:"Cash On Delivery"
     },
+    paymentStatus:{
+        type:Boolean,
+        default:false,
+    },
     status:{
         type:String,
         default:"Order Placed"

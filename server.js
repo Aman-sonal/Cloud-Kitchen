@@ -87,9 +87,12 @@ io.on('connection', (socket)=>{
 
 eventEmitter.on('orderUpdated', (data)=>{
   io.to(`Order_${data.id}`).emit('orderUpdated', data);
-})
+}) 
 
 eventEmitter.on('orderPlaced', (data) =>{
   io.to('updateAdmin').emit('updateAdminPage', data);
 })
 require('./routes/web')(app);
+app.use((req,res) =>{
+  res.status(404).render('error/404');
+})

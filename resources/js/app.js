@@ -1,5 +1,8 @@
-import moment from 'moment'; 
-import {initAdmin} from './admin';
+import axios from "axios";
+import moment from "moment";
+import Noty from "noty";
+import { initAdmin } from "./admin";
+import { initStripe } from "./stripe";
 let addToCart = document.querySelectorAll(".add-to-cart");
 let cartCounter = document.querySelector(".cart-counter");
 function updateCart(pizza) {
@@ -109,60 +112,57 @@ if (alertMsg) {
   }, 2000);
 }
 
-
 //change Order Status
-let status= document.querySelectorAll('.status_line');
-let Order=document.querySelector('#hiddenInput')? document.querySelector('#hiddenInput').value: null;
-Order=JSON.parse(Order);
-console.log(Order,"sdcdscds");
-let time= document.createElement('small');
-function updateStatus(Order)
-{
-  status.forEach((status) =>{
-    status.classList.remove('step-completed');
-    status.classList.remove('current');
+let status = document.querySelectorAll(".status_line");
+let Order = document.querySelector("#hiddenInput")
+  ? document.querySelector("#hiddenInput").value
+  : null;
+Order = JSON.parse(Order);
+console.log(Order, "sdcdscds");
+let time = document.createElement("small");
+function updateStatus(Order) {
+  status.forEach((status) => {
+    status.classList.remove("step-completed");
+    status.classList.remove("current");
   });
-  let stepCompleted=true;
-  status.forEach((sta)=>{
-      let dataProp= sta.dataset.status;
-      if(stepCompleted)
-      {
-        sta.classList.add('step-completed');
-      }
-      if(dataProp=== Order.status)
-      {
-        stepCompleted=false;
-        time.innerText= moment(Order.updatedAt).format('hh:mm A');
-        sta.appendChild(time); 
-          if(sta.nextElementSibling)
-              sta.nextElementSibling.classList.add('current');
-      }
-  })
+  let stepCompleted = true;
+  status.forEach((sta) => {
+    let dataProp = sta.dataset.status;
+    if (stepCompleted) {
+      sta.classList.add("step-completed");
+    }
+    if (dataProp === Order.status) {
+      stepCompleted = false;
+      time.innerText = moment(Order.updatedAt).format("hh:mm A");
+      sta.appendChild(time);
+      if (sta.nextElementSibling)
+        sta.nextElementSibling.classList.add("current");
+    }
+  });
 }
 
 updateStatus(Order);
 
+initStripe();
+
 //Socket.io
 
-let socket=io();
+let socket = io();
 
-
-if(Order)
-{
-  socket.emit('join',`Order_${Order._id}`)
+if (Order) {
+  socket.emit("join", `Order_${Order._id}`);
 }
 
-let AdminArea= window.location.pathname;
+let AdminArea = window.location.pathname;
 // console.log(AdminArea);
-if(AdminArea.includes('admin'))
-{
+if (AdminArea.includes("admin")) {
   initAdmin(socket);
-  socket.emit("join", 'updateAdmin');
+  socket.emit("join", "updateAdmin");
 }
 
-socket.on('orderUpdated', (data)=>{
-  const updatedOrder= {...Order};
-  updatedOrder.updatedAt= moment().format();
+socket.on("orderUpdated", (data) => {
+  const updatedOrder = { ...Order };
+  updatedOrder.updatedAt = moment().format();
   updatedOrder.status = data.status;
-  updateStatus(updatedOrder);  
-})
+  updateStatus(updatedOrder);
+});
