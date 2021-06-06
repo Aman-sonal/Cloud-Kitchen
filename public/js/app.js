@@ -218,7 +218,6 @@ function updateStatus(Order) {
 updateStatus(Order); //Socket.io
 
 var socket = io();
-(0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(socket);
 
 if (Order) {
   socket.emit('join', "Order_".concat(Order._id));
@@ -227,6 +226,7 @@ if (Order) {
 var AdminArea = window.location.pathname; // console.log(AdminArea);
 
 if (AdminArea.includes('admin')) {
+  (0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(socket);
   socket.emit("join", 'updateAdmin');
 }
 

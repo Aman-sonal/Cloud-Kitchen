@@ -145,7 +145,7 @@ updateStatus(Order);
 //Socket.io
 
 let socket=io();
-initAdmin(socket);
+
 
 if(Order)
 {
@@ -156,6 +156,7 @@ let AdminArea= window.location.pathname;
 // console.log(AdminArea);
 if(AdminArea.includes('admin'))
 {
+  initAdmin(socket);
   socket.emit("join", 'updateAdmin');
 }
 
